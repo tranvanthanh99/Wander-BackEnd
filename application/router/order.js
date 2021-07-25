@@ -1,6 +1,6 @@
 var express = require("express");
 var orderService = require("../../domain/services/orderService");
-var auth = require("../../config/auth")
+var auth = require("../../config/auth");
 var router = express.Router();
 
 router.post("/createOrder", auth.require, async (req, res) => {
@@ -19,10 +19,25 @@ router.post("/createOrder", auth.require, async (req, res) => {
   }
 });
 
-router.get("/:userId", auth.require, async (req, res) => {
+router.get("/:userId", async (req, res) => {
   const { userId } = req.params;
+  const { type } = req.query;
   try {
-    const result = await orderService.getAllOrderOfOwner(userId);
+    let result;
+    if (type === "all")
+      result = await orderService.getWithQuery({
+        donatorId: userId,
+        receiverId: userId,
+      });
+    else if (type === "receiver") {
+      result = await orderService.getAllOrderOfOwner({
+        receiverId: userId,
+      });
+    } else {
+      result = await orderService.getAllOrderOfOwner({
+        donatorId: userId,
+      });
+    }
     res.status(200).json(result);
   } catch (err) {
     res.status(500).json({
