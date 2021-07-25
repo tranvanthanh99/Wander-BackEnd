@@ -20,6 +20,14 @@ const orderService = {
       throw new Error("error/CANNOT_GET_ALL/UNIDENTIFY_ERROR");
     }
   },
+  getWithQuery: async (query) => {
+    let result = await Order.find(query);
+    if (result && result.length != 0) {
+      return result;
+    } else {
+      throw new Error("error/CANNOT_GET_ALL/UNIDENTIFY_ERROR");
+    }
+  },
   createOrder: async (OrderOps) => {
     if (
       OrderOps["donatorId"] &&

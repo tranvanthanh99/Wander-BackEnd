@@ -21,15 +21,12 @@ const productService = {
       throw new Error("error/CANNOT_GET_ALL/UNIDENTIFY_ERROR");
     }
   },
-  getFilteredProduct: async ({
-    productCategory,
-    gender,
-    size,
-    price,
-    tags,
-    year,
-    sort
-  }, offset = 0, limit = 20, admin) => {
+  getFilteredProduct: async (
+    { productCategory, gender, size, price, tags, year, sort },
+    offset = 0,
+    limit = 20,
+    admin
+  ) => {
     let andQueries = [];
     let sortQuery = {};
     for (const [key, value] of Object.entries({
@@ -98,8 +95,9 @@ const productService = {
         } else andQueries = [{ [key]: value }, ...andQueries];
       }
     }
-    const searchQueries = andQueries.length > 0 ? { $and: [...andQueries] } : {};
-    console.log(searchQueries)
+    const searchQueries =
+      andQueries.length > 0 ? { $and: [...andQueries] } : {};
+    console.log(searchQueries);
     const totalRecord = await Product.countDocuments(searchQueries);
     const result = await Product.find(searchQueries)
       .limit(parseInt(limit))
@@ -134,7 +132,7 @@ const productService = {
   },
   updateProduct: async (_id, updateOps) => {
     updateOps["dateUpdated"] = Date.now();
- 
+
     let result = await Product.updateOne({ _id }, { $set: updateOps });
     if (result) {
       return result;
@@ -144,9 +142,15 @@ const productService = {
   },
 
   deleteProduct: async (_id) => {
-    let result = await Product.deleteOne(
-      { _id }
-    );
+    let result = await Product.deleteOne({ _id });
+    if (result) {
+      return result;
+    } else {
+      throw new Error("error/PRODUCT_NOT_FOUND/WRONG_ID");
+    }
+  },
+  getAllProductOfOwner: async (uid) => {
+    let result = await Product.find({ "donator._id": uid });
     if (result) {
       return result;
     } else {
