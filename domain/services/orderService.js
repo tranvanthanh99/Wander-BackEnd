@@ -22,6 +22,7 @@ const orderService = {
   },
   getWithQuery: async (query) => {
     let result = await Order.find(query);
+    console.log(query)
     if (result && result.length != 0) {
       return result;
     } else {

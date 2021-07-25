@@ -26,10 +26,7 @@ router.get("/:userId", async (req, res) => {
   try {
     let result;
     if (type === "all")
-      result = await orderService.getWithQuery({
-        donatorId: userId,
-        receiverId: userId,
-      });
+      result = await orderService.getWithQuery({ $or: [ { donatorId: userId} , {receiverId: userId}] });
     else if (type === "receiver") {
       result = await orderService.getAllOrderOfOwner({
         receiverId: userId,
