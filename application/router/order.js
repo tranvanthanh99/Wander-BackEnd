@@ -8,6 +8,7 @@ router.post("/createOrder", async (req, res) => {
   for (const [key, value] of Object.entries(req.body)) {
     orderOps[key] = value;
   }
+  console.log(orderOps)
   try {
     const newOrder = await orderService.createOrder(orderOps);
   res.json(newOrder);
