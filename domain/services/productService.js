@@ -32,7 +32,7 @@ const productService = {
     let andQueries = [];
     let sortQuery = {};
     for (const [key, value] of Object.entries({
-      productCategory,
+      // productCategory,
       gender,
       size,
       price,
@@ -97,7 +97,8 @@ const productService = {
         } else andQueries = [{ [key]: value }, ...andQueries];
       }
     }
-    const searchQueries = { $and: [...andQueries, { available: admin ? { $in: [true, false] } : true }] };
+    const searchQueries = andQueries.length > 0 ? { $and: [...andQueries] } : {};
+    console.log(searchQueries)
     const totalRecord = await Product.countDocuments(searchQueries);
     const result = await Product.find(searchQueries)
       .limit(parseInt(limit))

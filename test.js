@@ -55,6 +55,38 @@ async function createProduct(productOps) {
     }
 }
 
+productOps = {
+    "productName": "cabbage",
+    "productCategory": "vegetables",
+    "donator": {
+        "_id" : "403940fc8fbf8ec0642f596f8019581b",
+        "name": "thanh tran",
+    },
+    "imageurl": "https://specialtyproduce.com/sppics/11750.png",
+    "description": "Baby Green cabbages are small, compact heads, averaging ten centimeters in diameter, and have a round to ovate shape. The heads consist of many layers of tightly packed leaves, which are smooth, crisp, firm, and pale green. The leaves also have a slightly waxy consistency and prominent central midribs that expand into smaller veins across the surface. Baby Green cabbages, when raw, are crunchy, grassy, and sweet, and when heated, the leaves soften and develop an even milder taste.",
+    "detail": [{
+        "name": "",
+        "value": ""
+    }],
+    "quantity": {
+        "init": 12,
+        "remain": 12
+    },
+    "location" : {
+        "city": "Hanoi",
+        "district": "Cau Giay"
+    },
+    "rating": 5,
+    "tags": [
+        "vegetables",
+        "green",
+        "fresh",
+        "raw"
+    ]
+}
+
+// createProduct(productOps)
+
 async function makeRequest() {
 
     let response = await axios(config)
@@ -93,10 +125,11 @@ async function updatePro() {
     res.map(async i => {
         // Object.assign(i, { releaseDate: i.detail.reduce((val, item) => item.name === "Release Date" ? new Date(item.value) : val, new Date("2020-04-08")) })
         // console.log(i.releaseDate)
-        Object.assign(i, { numberSold: getRandomInt(5, 60) })
+        Object.assign(i, { imageurl: [i.imageurl] })
         try {
             const updateProduct = await productService.updateProduct(i._id, i);
             console.log(`newProduct added ${updateProduct.ok}`)
+            console.log(i.imageurl)
         } catch (error) {
             console.log("cant add product")
         }
@@ -125,4 +158,4 @@ async function updateUser() {
     })
 }
 
-updateUser()
+// updateUser()

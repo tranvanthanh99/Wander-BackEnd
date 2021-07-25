@@ -9,8 +9,9 @@ var detail = new Schema({
 
 var productSchema = new Schema({
   productName: String,
+  productCategory: String,
   description: String,
-  imageurl: String,
+  imageurl: [String],
   donator: {
     name: String,
     _id: String

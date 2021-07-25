@@ -9,6 +9,7 @@ const OrderSchema = new Schema({
     orderDate: Date,
     shipDate: Date,
     quantity: Number,
+    donate: Number,
     status: String //Shipping, Received
 });
 
