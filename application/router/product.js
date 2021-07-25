@@ -44,11 +44,13 @@ router.get("/:id", async (req, res) => {
 
 router.post("/createProduct", async (req, res) => {
   const productOps = {};
-  for (const [key, value] of Object.entries(req.body)) {
+  for (const [key, value] of Object.entries(req.body.productData)) {
     productOps[key] = value;
   }
+  const { base64EncodedImage, ...otherOps } = productOps
+  // console.log(otherOps)
   try {
-    const newProduct = await productService.createProduct(productOps);
+    const newProduct = await productService.createProduct(otherOps, base64EncodedImage);
     res.json(newProduct);
   } catch (err) {
     res.status(400);

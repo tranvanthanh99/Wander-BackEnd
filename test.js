@@ -125,11 +125,11 @@ async function updatePro() {
     res.map(async i => {
         // Object.assign(i, { releaseDate: i.detail.reduce((val, item) => item.name === "Release Date" ? new Date(item.value) : val, new Date("2020-04-08")) })
         // console.log(i.releaseDate)
-        Object.assign(i, { imageurl: [i.imageurl] })
+        Object.assign(i, { condition: "new" })
         try {
             const updateProduct = await productService.updateProduct(i._id, i);
             console.log(`newProduct added ${updateProduct.ok}`)
-            console.log(i.imageurl)
+            console.log(i)
         } catch (error) {
             console.log("cant add product")
         }

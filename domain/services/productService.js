@@ -1,4 +1,5 @@
 var Product = require("../models/product");
+const { cloudinary } = require('../../infrastructure/cloudinary');
 
 const productService = {
   getProduct: async (_id) => {
@@ -110,13 +111,22 @@ const productService = {
       throw new Error("error/CANNOT_GET_FILTERED_PRODUCTS/UNEXPECTED_QUERIES");
     }
   },
-  createProduct: async (ProductOps) => {
+  createProduct: async (ProductOps, image) => {
     if (
       ProductOps["productName"] 
     ) {
-        const newProduct = Product(ProductOps);
-        await newProduct.save();
-        return newProduct;
+        try {
+          const uploadResponse = await cloudinary.uploader.upload(image, {
+            upload_preset: 'wander_product',
+          });
+          const imageurl = [uploadResponse.secure_url]
+          const newProduct = Product({...ProductOps, imageurl});
+          await newProduct.save();
+          return newProduct;
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({ err: 'Something went wrong' });
+        }
       }
      else {
       throw new Error("error/PRODUCT_LACK_INFO");

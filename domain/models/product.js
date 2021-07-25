@@ -11,6 +11,7 @@ var productSchema = new Schema({
   productName: String,
   productCategory: String,
   description: String,
+  condition: String,
   imageurl: [String],
   donator: {
     name: String,
