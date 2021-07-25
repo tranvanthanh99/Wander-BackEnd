@@ -41,6 +41,18 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+router.get("/owner/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const result = await productService.getAllProductOfOwner(id);
+    res.status(200).json(result);
+  } catch (err) {
+    res.status(500).json({
+      err: err.message,
+    });
+  }
+});
+
 
 router.post("/createProduct", async (req, res) => {
   const productOps = {};

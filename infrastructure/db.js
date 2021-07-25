@@ -9,7 +9,7 @@ const db = {
         useUnifiedTopology: true
     }
 }
-
+console.log(`mongodb+srv://${process.env.DB_HOST}:${process.env.DB_KEY}${process.env.DB_PORT}/${process.env.DB_NAME}?retryWrites=true&w=majority`)
 mongoose.connect(db.url, db.option);
 
 module.exports = mongoose;
